@@ -1,0 +1,27 @@
+# Docker Compose file for ActivityWatch
+# Version 3.8 of the compose file format
+version: "3.8"
+
+services:
+  # Define the activitywatch service
+  activitywatch:
+    # Build the Docker image from the Dockerfile in the current directory
+    build: .
+    # Name the container for easier management
+    container_name: activitywatch
+    # Restart the container automatically if it stops
+    restart: unless-stopped
+    # Map port 5600 on the host to port 5600 in the container.
+    # This allows you to access the web UI via http://localhost:5600
+    ports:
+      - "5601:5600"
+    # Map local directories to the container's data and config volumes.
+    # This persists your data on your host machine.
+    volumes:
+      - aw-data:/root/.local/share/activitywatch
+      - aw-config:/root/.config/activitywatch
+
+# Define the named volumes for better management by Docker
+volumes:
+  aw-data:
+  aw-config:
