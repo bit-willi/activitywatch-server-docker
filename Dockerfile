@@ -1,10 +1,8 @@
 # --- Stage 1: Builder ---
-# This stage will build the application. It contains all the build tools
-# but will be discarded after the build is complete.
 FROM archlinux:latest AS builder
 
 # Set a label for the maintainer
-LABEL maintainer="Gemini"
+LABEL maintainer="Willian de Souza<me@bitwilli.com>"
 
 # Install build dependencies
 RUN pacman -Syu --noconfirm && \
@@ -27,12 +25,10 @@ RUN git clone https://aur.archlinux.org/activitywatch-bin.git && \
 
 
 # --- Stage 2: Final Image ---
-# This is the final, lightweight image. It starts from a fresh base
-# and only copies the application files from the builder stage.
 FROM archlinux:latest
 
 # Set a label for the maintainer
-LABEL maintainer="Gemini"
+LABEL maintainer="Willian de Souza<me@bitwilli.com>"
 
 # Update the system, install runtime dependencies, and then clean up.
 # Cleaning the pacman cache in the same RUN command reduces image size.
@@ -60,6 +56,5 @@ VOLUME ["/root/.config/activitywatch", "/root/.local/share/activitywatch"]
 # Set the working directory
 WORKDIR /opt/activitywatch
 
-# The command to run when the container starts.
-# Corrected to point to the executable inside the subdirectory.
+# Run the server.
 CMD ["./aw-server/aw-server", "--host=0.0.0.0", "--cors-origins=*"]
